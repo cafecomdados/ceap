@@ -19,7 +19,7 @@ cota <- cota19a23 |>
   full_join(cota24) 
 
 
-# Função para identificar outliers usando Isolation Forest, ignorando valores negativos
+# Função para identificar outliers usando Isolation Forest, considerando todos os valores
 isolation_forest_suspect <- function(data) {
   # Garantir que o tamanho mínimo do dataset seja suficiente
   if (nrow(data) < 5) {
@@ -27,27 +27,20 @@ isolation_forest_suspect <- function(data) {
     return(data)
   }
   
-  # Marcar valores negativos como "Não" suspeitos
+  # Inicializar a coluna "Suspeito" com 0
   data$Suspeito <- 0
   
-  # Aplicar o modelo apenas aos valores não negativos
-  non_negative_data <- data[data$vlrLiquido >= 0, ]
+  # Aplicar o modelo Isolation Forest a todos os valores
+  isolation_model <- isolationForest$new(
+    sample_size = min(256, nrow(data)),  # Ajustar o tamanho da amostra
+    max_depth = 8  # Definir explicitamente max_depth
+  )
   
-  if (nrow(non_negative_data) >= 5) {
-    isolation_model <- isolationForest$new(
-      sample_size = min(256, nrow(non_negative_data)),  # Ajustar o tamanho da amostra
-      max_depth = 8  # Definir explicitamente max_depth
-    )
-    
-    isolation_model$fit(data.frame(vlrLiquido = non_negative_data$vlrLiquido))
-    prediction <- isolation_model$predict(data.frame(vlrLiquido = non_negative_data$vlrLiquido))
-    threshold <- quantile(prediction$anomaly_score, 0.95)
-    
-    non_negative_data$Suspeito <- ifelse(prediction$anomaly_score > threshold, 1, 0)
-  }
+  isolation_model$fit(data.frame(vlrLiquido = data$vlrLiquido))
+  prediction <- isolation_model$predict(data.frame(vlrLiquido = data$vlrLiquido))
+  threshold <- quantile(prediction$anomaly_score, 0.95)
   
-  # Atualizar a coluna "Suspeito" nos dados originais
-  data[data$vlrLiquido >= 0, ]$Suspeito <- non_negative_data$Suspeito
+  data$Suspeito <- ifelse(prediction$anomaly_score > threshold, 1, 0)
   
   return(data)
 }
