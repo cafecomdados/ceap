@@ -52,5 +52,29 @@ cota <- cota %>%
   do(isolation_forest_suspect(.)) %>%
   ungroup()
 
+cota <- cota |> 
+  mutate(txtDescricao = case_when(
+    txtDescricao == "ASSINATURA DE PUBLICAÇÕES" ~ "Assinaturas e Publicações",
+    txtDescricao == "COMBUSTÍVEIS E LUBRIFICANTES." ~ "Combustíveis e Lubrificantes",
+    txtDescricao == "CONSULTORIAS, PESQUISAS E TRABALHOS TÉCNICOS." ~ "Consultorias e Trabalhos Técnicos",
+    txtDescricao == "DIVULGAÇÃO DA ATIVIDADE PARLAMENTAR." ~ "Divulgação Parlamentar",
+    txtDescricao == "FORNECIMENTO DE ALIMENTAÇÃO DO PARLAMENTAR" ~ "Alimentação do Parlamentar",
+    txtDescricao == "HOSPEDAGEM ,EXCETO DO PARLAMENTAR NO DISTRITO FEDERAL." ~ "Hospedagem (exceto no DF)",
+    txtDescricao == "LOCAÇÃO OU FRETAMENTO DE AERONAVES" ~ "Locação de Aeronaves",
+    txtDescricao == "LOCAÇÃO OU FRETAMENTO DE EMBARCAÇÕES" ~ "Locação de Embarcações",
+    txtDescricao == "LOCAÇÃO OU FRETAMENTO DE VEÍCULOS AUTOMOTORES" ~ "Locação de Veículos",
+    txtDescricao == "MANUTENÇÃO DE ESCRITÓRIO DE APOIO À ATIVIDADE PARLAMENTAR" ~ "Manutenção de Escritório Parlamentar",
+    txtDescricao == "PARTICIPAÇÃO EM CURSO, PALESTRA OU EVENTO SIMILAR" ~ "Participação em Cursos e Eventos",
+    txtDescricao == "PASSAGEM AÉREA - REEMBOLSO" ~ "Passagem Aérea - Reembolso",
+    txtDescricao == "PASSAGEM AÉREA - RPA" ~ "Passagem Aérea - RPA",
+    txtDescricao == "PASSAGEM AÉREA - SIGEPA" ~ "Passagem Aérea - SIGEPA",
+    txtDescricao == "PASSAGENS TERRESTRES, MARÍTIMAS OU FLUVIAIS" ~ "Passagens Terrestres/Marítimas/Fluviais",
+    txtDescricao == "SERVIÇO DE SEGURANÇA PRESTADO POR EMPRESA ESPECIALIZADA." ~ "Serviço de Segurança",
+    txtDescricao == "SERVIÇO DE TÁXI, PEDÁGIO E ESTACIONAMENTO" ~ "Táxi, Pedágio e Estacionamento",
+    txtDescricao == "SERVIÇOS POSTAIS" ~ "Serviços Postais",
+    txtDescricao == "TELEFONIA" ~ "Telefonia",
+    txtDescricao == "AQUISIÇÃO DE TOKENS E CERTIFICADOS DIGITAIS" ~ "Tokens e Certificados Digitais",
+    TRUE ~ txtDescricao 
+  ))
 
 saveRDS(cota, 'data/cota.rds')
