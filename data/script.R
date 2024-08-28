@@ -76,7 +76,6 @@ cota <- cota |>
     txtDescricao == "TELEFONIA" ~ "Telefonia",
     txtDescricao == "AQUISIÇÃO DE TOKENS E CERTIFICADOS DIGITAIS" ~ "Tokens e Certificados Digitais",
     TRUE ~ txtDescricao 
-  )) |> 
-  mutate(urlDocumento = str_replace(urlDocumento, "https://www.camara.leg.br/cota-parlamentar/", ""))
+  )) 
 
 saveRDS(cota, 'data/cota.rds')
