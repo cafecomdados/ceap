@@ -10,7 +10,7 @@ arquivo_local <- "Ano-2024.xlsx"
 download.file(url24, destfile = arquivo_local, mode = "wb")
 
 cota24 <- read_excel(arquivo_local) |> 
-  select(txNomeParlamentar, nuLegislatura, sgUF, sgPartido, txtDescricao, txtDescricaoEspecificacao, txtFornecedor, txtCNPJCPF, datEmissao, vlrLiquido, numAno, urlDocumento) |> 
+  select(txNomeParlamentar, ideCadastro, sgUF, sgPartido, txtDescricao, txtDescricaoEspecificacao, txtFornecedor, txtCNPJCPF, datEmissao, vlrLiquido, numAno, urlDocumento) |> 
   mutate(datEmissao = as.Date(datEmissao, format = "%Y-%m-%d"))
 
 file.remove('Ano-2024.xlsx')
