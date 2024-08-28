@@ -20,6 +20,7 @@ jobs:
         with:
           packages: |
             any::dplyr
+            any::stringr
             any::readxl
             any::lubridate
             any::solitude
